@@ -1,0 +1,187 @@
+/* ==========================================
+   EMSI Exact Login Page Stylesheet
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+
+.login-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 440px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.logo {
+    max-width: 260px;
+    height: auto;
+    object-fit: contain;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.input-group {
+    background-color: #eeeeee; /* Light grey filled field input background */
+    border-radius: 4px 4px 0 0;
+    padding: 6px 12px 0px;
+    position: relative;
+    border-bottom: 1px solid #757575;
+    margin-bottom: 24px;
+    width: 100%;
+    height: 52px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input-group:hover {
+    background-color: #e0e0e0;
+}
+
+.floating-label {
+    font-size: 11px;
+    color: #616161;
+    margin-bottom: 2px;
+    font-weight: 400;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #212121;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    font-weight: 400;
+    padding-right: 24px;
+}
+
+.select-wrapper::after {
+    content: '▼';
+    font-size: 9px;
+    color: #616161;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.btn-microsoft {
+    width: 100%;
+    height: 40px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+    outline: none;
+}
+
+.btn-microsoft:hover {
+    background-color: #f7f7f7;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #212121;
+    outline: none;
+    font-weight: 400;
+    padding-top: 2px;
+}
+
+.btn-connect {
+    width: 100%;
+    height: 40px;
+    background-color: #e0e0e0;
+    color: #7f7f7f;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: not-allowed;
+    transition: background-color 0.2s, color 0.2s;
+    text-align: center;
+    outline: none;
+    margin-bottom: 24px;
+}
+
+.btn-connect.active {
+    background-color: #1565c0; /* Dynamic active color matches Microsoft / EMSI blue */
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.forgot-password-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.forgot-link {
+    color: #0022ff; /* Official EMSI login links blue */
+    text-decoration: underline;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.forgot-link:hover {
+    text-decoration: none;
+}
+

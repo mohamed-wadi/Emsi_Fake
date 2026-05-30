@@ -1,0 +1,659 @@
+/* ==========================================
+   CampuSphere Cloud Student Portal Stylesheet
+   Replicating the exact EMSI layout
+   ========================================== */
+
+:root {
+    --header-bg: #1565c0; /* Deep blue header color */
+    --sidebar-bg: #f5f7f8; /* Very light slate gray/blue */
+    --content-bg: #f9f9f9;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-light: #888888;
+    --border-color: #e0e0e0;
+    --active-blue: #1565c0;
+    --active-bg: #e3f2fd;
+    --event-blue: #e3f2fd;
+    --event-blue-border: #1565c0;
+    --event-purple: #ede7f6;
+    --event-purple-border: #5e35b1;
+    --success-green: #e8f5e9;
+    --success-green-text: #2e7d32;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--content-bg);
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================
+   Header Styles
+   ========================================== */
+.top-header {
+    height: 64px;
+    background-color: var(--header-bg);
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 40px;
+    width: auto;
+    max-width: 280px;
+    object-fit: contain;
+    /* CSS magic to convert a colored logo to clean white to match Honoris/EMSI header */
+    filter: brightness(0) invert(1); 
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.profile-btn {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   Layout Containers
+   ========================================== */
+.app-layout {
+    display: flex;
+    margin-top: 64px;
+    height: calc(100vh - 64px);
+    width: 100%;
+}
+
+/* ==========================================
+   Sidebar Navigation
+   ========================================== */
+.sidebar {
+    width: 280px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-title {
+    padding: 20px 24px;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 16px 0;
+}
+
+/* Navigation Sections */
+.nav-section {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 24px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.section-header .icon {
+    font-size: 14px;
+}
+
+.section-header .badge {
+    background-color: var(--text-secondary);
+    color: var(--sidebar-bg);
+    font-size: 10px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-subsection {
+    margin-top: 10px;
+}
+
+.subsection-title {
+    display: block;
+    padding: 4px 24px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+}
+
+.section-menu {
+    list-style: none;
+    margin-top: 4px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px 10px 32px;
+    color: #455a64;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    color: var(--text-primary);
+}
+
+.menu-item.active {
+    background-color: var(--active-bg);
+    color: var(--active-blue);
+    border-right: 4px solid var(--active-blue);
+}
+
+.bullet {
+    font-size: 16px;
+    line-height: 1;
+    margin-top: -2px;
+}
+
+/* Sidebar Footer (Profile & Logout) */
+.sidebar-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 16px;
+    background-color: rgba(0,0,0,0.01);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 4px 8px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #cfd8dc;
+    color: #546e7a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    color: #d32f2f;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #ffebee;
+}
+
+/* ==========================================
+   Main Content Area
+   ========================================== */
+.main-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.content-section {
+    display: none;
+    max-width: 100%;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.view-title {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+}
+
+/* ==========================================
+   Table Components
+   ========================================== */
+.table-container {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+}
+
+.data-table th {
+    background-color: #fafafa;
+    color: var(--text-secondary);
+    font-weight: 700;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 12px;
+}
+
+.data-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.date-cell {
+    white-space: nowrap;
+    color: var(--text-secondary);
+}
+
+.read-more {
+    color: var(--active-blue);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 11px;
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.status-justified {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.empty-state {
+    padding: 40px 16px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 14px;
+    background-color: #ffffff;
+}
+
+/* ==========================================
+   Calendrier Tab Custom Styles
+   ========================================== */
+.calendar-card {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.cal-nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.cal-nav-btn:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.cal-date-range {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.calendar-dropdown {
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.calendar-grid-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, minmax(130px, 1fr));
+    min-width: 900px;
+}
+
+/* Headers styling */
+.grid-time-header {
+    background-color: #fafafa;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.grid-day-header {
+    background-color: #fafafa;
+    text-align: center;
+    padding: 12px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    line-height: 1.6;
+}
+
+.grid-day-header:last-child {
+    border-right: none;
+}
+
+.grid-day-header .day-num {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.grid-day-header.today {
+    background-color: #f0f4c3;
+}
+
+.badge-day {
+    background-color: #1976d2;
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Grid Labels & Slots */
+.grid-time-label {
+    grid-column: 1;
+    font-size: 11px;
+    color: var(--text-light);
+    text-align: right;
+    padding-right: 8px;
+    padding-top: 8px;
+    border-bottom: 1px dashed var(--border-color);
+    border-right: 1px solid var(--border-color);
+    height: 60px;
+}
+
+.grid-slot {
+    border-bottom: 1px dashed var(--border-color);
+    border-right: 1px solid var(--border-color);
+    height: 60px;
+    position: relative;
+}
+
+.grid-slot:last-child {
+    border-right: none;
+}
+
+/* Event Card styling */
+.event-card {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 10px;
+    z-index: 5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.event-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    z-index: 6;
+}
+
+.event-card.light-blue {
+    background-color: var(--event-blue);
+    border-left: 3px solid var(--event-blue-border);
+    color: #0d47a1;
+}
+
+.event-card.light-purple {
+    background-color: var(--event-purple);
+    border-left: 3px solid var(--event-purple-border);
+    color: #4a148c;
+}
+
+.event-title {
+    font-weight: 700;
+    font-size: 10.5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.event-time {
+    font-weight: 500;
+}
+
+.event-detail {
+    opacity: 0.9;
+}
+
+.event-type {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* ==========================================
+   Transcript S1 Custom Styles
+   ========================================== */
+.transcript-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.module-card {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 20px;
+}
+
+.module-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.module-score {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.transcript-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.transcript-table th {
+    font-weight: 700;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fafafa;
+}
+
+.transcript-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.transcript-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.result-header {
+    text-align: right;
+    color: var(--success-green-text) !important;
+}
+
+/* ==========================================
+   Responsive Breakpoints
+   ========================================== */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 64px;
+        bottom: 0;
+        transform: translateX(-100%);
+        z-index: 90;
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+    }
+    
+    .main-content {
+        padding: 16px;
+    }
+}

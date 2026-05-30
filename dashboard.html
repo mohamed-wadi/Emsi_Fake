@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampuSphere Cloud Student Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
+            <div class="logo-container">
+                <img src="app_logo_emsi.png" alt="EMSI Logo" class="header-logo">
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="profile-btn">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <h2 class="sidebar-title">Navigation</h2>
+            
+            <nav class="sidebar-nav">
+                <!-- SECTION 1 -->
+                <div class="nav-section">
+                    <div class="section-header">
+                        <span class="icon">📖</span>
+                        <span>INFORMATIONS GÉNÉRALES</span>
+                    </div>
+                    <ul class="section-menu">
+                        <li>
+                            <a href="#" class="menu-item active" data-target="calendrier">
+                                <span class="bullet">•</span> Calendrier
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu-item" data-target="mesures">
+                                <span class="bullet">•</span> Mesures disciplinaires
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="nav-section">
+                    <div class="section-header">
+                        <span class="badge">2</span>
+                        <span>SEMESTRE 2</span>
+                    </div>
+                    
+                    <div class="section-subsection">
+                        <span class="subsection-title">SUIVI PÉDAGOGIQUE</span>
+                        <ul class="section-menu">
+                            <li>
+                                <a href="#" class="menu-item" data-target="notes-s2">
+                                    <span class="bullet">•</span> Notes pédagogiques S2
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="section-subsection">
+                        <span class="subsection-title">ASSIDUITÉ</span>
+                        <ul class="section-menu">
+                            <li>
+                                <a href="#" class="menu-item" data-target="absences-cours-s2">
+                                    <span class="bullet">•</span> Absences aux cours S2
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="menu-item" data-target="absences-controles-s2">
+                                    <span class="bullet">•</span> Absences aux contrôles s2
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="nav-section">
+                    <div class="section-header">
+                        <span class="badge">1</span>
+                        <span>SEMESTRE 1</span>
+                    </div>
+
+                    <div class="section-subsection">
+                        <span class="subsection-title">ASSIDUITÉ</span>
+                        <ul class="section-menu">
+                            <li>
+                                <a href="#" class="menu-item" data-target="absences-cours-s1">
+                                    <span class="bullet">•</span> Absences aux cours s1
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="menu-item" data-target="absences-controles-s1">
+                                    <span class="bullet">•</span> Absences aux contrôles s1
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="menu-item" data-target="absences-examens-s1">
+                                    <span class="bullet">•</span> Absences aux examens s1
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="section-subsection">
+                        <span class="subsection-title">INCIDENTS</span>
+                        <ul class="section-menu">
+                            <li>
+                                <a href="#" class="menu-item" data-target="fraudes-s1">
+                                    <span class="bullet">•</span> Fraudes s1
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="section-subsection">
+                        <span class="subsection-title">RÉSULTATS</span>
+                        <ul class="section-menu">
+                            <li>
+                                <a href="#" class="menu-item" data-target="notes-s1">
+                                    <span class="bullet">•</span> Relevé de notes S1
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Sidebar Footer User Profile -->
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <span class="user-name" id="userName">WADI Mohamed</span>
+
+                </div>
+                <a href="index.html" class="logout-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="currentColor" d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                    </svg>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- VIEW: CALENDRIER -->
+            <section id="view-calendrier" class="content-section active">
+                <h1 class="view-title">Calendrier</h1>
+                
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <div class="calendar-nav">
+                            <button class="cal-nav-btn">&lt;</button>
+                            <span class="cal-date-range">25-31 May 2026</span>
+                            <button class="cal-nav-btn">&gt;</button>
+                        </div>
+                        <div class="calendar-dropdown">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid-wrapper">
+                        <div class="calendar-grid">
+                            <!-- Headers -->
+                            <div class="grid-time-header"></div>
+                            <div class="grid-day-header">Mon<br><span class="day-num">25</span></div>
+                            <div class="grid-day-header">Tue<br><span class="day-num">26</span></div>
+                            <div class="grid-day-header">Wed<br><span class="day-num">27</span></div>
+                            <div class="grid-day-header">Thu<br><span class="day-num">28</span></div>
+                            <div class="grid-day-header">Fri<br><span class="day-num">29</span></div>
+                            <div class="grid-day-header today">Sat<br><span class="day-num badge-day">30</span></div>
+                            <div class="grid-day-header">Sun<br><span class="day-num">31</span></div>
+
+                            <!-- Time rows & Slots -->
+                            <!-- Row 8:00 AM -->
+                            <div class="grid-time-label">8:00 AM</div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 9:00 AM -->
+                            <div class="grid-time-label">9:00 AM</div>
+                            <div class="grid-slot"></div>
+                            <div class="grid-slot"></div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 190%; margin-top: 0px;">
+                                    <div class="event-title">Gestion Des Intrusions</div>
+                                    <div class="event-time">09:00 - 11:00</div>
+                                    <div class="event-detail">Salle : LI03(M) - Maarif</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 140%; margin-top: 0px;">
+                                    <div class="event-title">Blockchain</div>
+                                    <div class="event-time">09:00 - 10:30</div>
+                                    <div class="event-detail">Salle : SC22(R) - Roudani</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot"></div>
+                            <div class="grid-slot">
+                                <div class="event-card light-purple" style="height: 140%; margin-top: 25%;">
+                                    <div class="event-title">Projet</div>
+                                    <div class="event-time">09:15 - 10:45</div>
+                                    <div class="event-detail">Salle : SC23(M) - Maarif</div>
+                                    <div class="event-type">Séance : Encadrement</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot"></div>
+
+                            <!-- Row 10:00 AM -->
+                            <div class="grid-time-label">10:00 AM</div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 11:00 AM -->
+                            <div class="grid-time-label">11:00 AM</div>
+                            <div class="grid-slot"></div>
+                            <div class="grid-slot"></div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 190%; margin-top: 25%;">
+                                    <div class="event-title">Sécurité Des Applications Web</div>
+                                    <div class="event-time">11:15 - 13:15</div>
+                                    <div class="event-detail">Salle : LI41(M) - Maarif</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 140%; margin-top: 75%;">
+                                    <div class="event-title">Blockchain</div>
+                                    <div class="event-time">10:45 - 12:15</div>
+                                    <div class="event-detail">Salle : SC22(R) - Roudani</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 12:00 PM -->
+                            <div class="grid-time-label">12:00 PM</div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 1:00 PM -->
+                            <div class="grid-time-label">1:00 PM</div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 2:00 PM -->
+                            <div class="grid-time-label">2:00 PM</div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 140%; margin-top: 0px;">
+                                    <div class="event-title">Gestion Des Incidents</div>
+                                    <div class="event-time">14:00 - 15:30</div>
+                                    <div class="event-detail">Salle : LI11(R) - Roudani</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 140%; margin-top: 0px;">
+                                    <div class="event-title">Cryptographie</div>
+                                    <div class="event-time">14:00 - 15:30</div>
+                                    <div class="event-detail">Salle : LI11(R) - Roudani</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 140%; margin-top: 50%;">
+                                    <div class="event-title">Communication Professionnelle 3</div>
+                                    <div class="event-time">14:30 - 16:00</div>
+                                    <div class="event-detail">Salle : SC31(R) - Roudani</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 3:00 PM -->
+                            <div class="grid-time-label">3:00 PM</div>
+                            <div class="grid-slot"></div>
+                            <div class="grid-slot">
+                                <div class="event-card light-blue" style="height: 140%; margin-top: 75%;">
+                                    <div class="event-title">Cryptographie</div>
+                                    <div class="event-time">15:45 - 17:15</div>
+                                    <div class="event-detail">Salle : LI11(R) - Roudani</div>
+                                    <div class="event-type">Séance : Normale</div>
+                                </div>
+                            </div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 4:00 PM -->
+                            <div class="grid-time-label">4:00 PM</div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+
+                            <!-- Row 5:00 PM -->
+                            <div class="grid-time-label">5:00 PM</div>
+                            <div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div><div class="grid-slot"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: MESURES DISCIPLINAIRES -->
+            <section id="view-mesures" class="content-section">
+                <h1 class="view-title">État des mesures disciplinaires pour absentéisme</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date de generation</th>
+                                <th>Avertissement</th>
+                                <th>Nombre des absences</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09/03/2026</td>
+                                <td>Avertissement Oral</td>
+                                <td>5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: NOTES PEDAGOGIQUES S2 -->
+            <section id="view-notes-s2" class="content-section">
+                <h1 class="view-title">Messages — Notes pédagogiques S2</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 180px;">Date publication</th>
+                                <th>Contenu</th>
+                                <th style="width: 120px;">Document</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="date-cell">14/05/2026 16:01</td>
+                                <td>
+                                    Les étudiants de la 4ème Année Cybersécurité et Infrastructure Réseaux G3 sont informés qu'un rattrapage en GESTION DE PROJET aura lieu à L'EMSI ROUDANI vendredi 15/05/2026 dans la salle LI11 de 16h15 à 17h45.
+                                    <br><a href="#" class="read-more">Lire plus</a>
+                                </td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="date-cell">13/05/2026 11:38</td>
+                                <td>
+                                    Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Gestion Des Incidents aura lieu Lundi 18/05/2026 dans la salle Li11 de 12h15 à 13h45.
+                                </td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="date-cell">24/04/2026 08:21</td>
+                                <td>
+                                    Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Advanced English 2 aura lieu Mardi 19/05/2026 dans la salle Li12 de 10h30 à 12h15.
+                                </td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="date-cell">24/04/2026 08:18</td>
+                                <td>
+                                    Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Advanced English 2 aura lieu Mardi 12/05/2026 dans la salle Li12 de 09h00 à 12h15.
+                                </td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="date-cell">23/02/2026 11:10</td>
+                                <td>
+                                    Objet: Note d'absence<br>
+                                    Les Etudiants de la 4ème Année CIRM G3, G4 & G5 sont informés que le cours d'Anglais n'aura pas lieu le Lundi 23/02/2026 et qu'un Rattrapage sera programmé ultérieurement.
+                                    <br><a href="#" class="read-more">Lire plus</a>
+                                </td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: ABSENCES COURS S2 -->
+            <section id="view-absences-cours-s2" class="content-section">
+                <h1 class="view-title">Absences aux cours s2</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>HD</th>
+                                <th>HF</th>
+                                <th>Cours</th>
+                                <th>Professeur</th>
+                                <th>Status</th>
+                                <th>Justif.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/05/2026</td>
+                                <td>14:30</td>
+                                <td>16:00</td>
+                                <td>Communication Professionnelle 3</td>
+                                <td>HAMDI Rachid</td>
+                                <td class="status-justified">justifié</td>
+                                <td>Certificat Médical</td>
+                            </tr>
+                            <tr>
+                                <td>14/05/2026</td>
+                                <td>16:15</td>
+                                <td>18:15</td>
+                                <td>Mise En Place Et Sécurité De L'infrastructure Reseau G3</td>
+                                <td>FETJAH Laila</td>
+                                <td class="status-justified">justifié</td>
+                                <td>Certificat Médical</td>
+                            </tr>
+                            <tr>
+                                <td>13/05/2026</td>
+                                <td>16:15</td>
+                                <td>17:45</td>
+                                <td>Sécurité Des Applications Web</td>
+                                <td>ENNAJI Mohamed</td>
+                                <td class="status-justified">justifié</td>
+                                <td>Certificat Médical</td>
+                            </tr>
+                            <tr>
+                                <td>13/05/2026</td>
+                                <td>09:00</td>
+                                <td>11:00</td>
+                                <td>Gestion Des Intrusions</td>
+                                <td>BOUKRI Khalil</td>
+                                <td class="status-justified">justifié</td>
+                                <td>Certificat Médical</td>
+                            </tr>
+                            <tr>
+                                <td>13/05/2026</td>
+                                <td>11:15</td>
+                                <td>13:15</td>
+                                <td>Sécurité Des Applications Web</td>
+                                <td>OUAGUID Abdellah</td>
+                                <td class="status-justified">justifié</td>
+                                <td>Certificat Médical</td>
+                            </tr>
+                            <tr>
+                                <td>24/04/2026</td>
+                                <td>08:30</td>
+                                <td>10:00</td>
+                                <td>Entreprenariat</td>
+                                <td>AIT LARBI Yousra</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>24/04/2026</td>
+                                <td>10:15</td>
+                                <td>11:45</td>
+                                <td>Gestion De Projet</td>
+                                <td>MONSIF Dounia</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>23/04/2026</td>
+                                <td>16:15</td>
+                                <td>18:15</td>
+                                <td>Mise En Place Et Sécurité De L'infrastructure Reseau G3</td>
+                                <td>FETJAH Laila</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>17/04/2026</td>
+                                <td>08:30</td>
+                                <td>10:00</td>
+                                <td>Entreprenariat</td>
+                                <td>AIT LARBI Yousra</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/04/2026</td>
+                                <td>14:30</td>
+                                <td>16:00</td>
+                                <td>Supervision Des Réseaux</td>
+                                <td>KHIAT Azeeddine</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/04/2026</td>
+                                <td>16:15</td>
+                                <td>18:15</td>
+                                <td>Mise En Place Et Sécurité De L'infrastructure Reseau G3</td>
+                                <td>FETJAH Laila</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/04/2026</td>
+                                <td>09:00</td>
+                                <td>10:30</td>
+                                <td>Blockchain</td>
+                                <td>EL KSIMI Ali</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/04/2026</td>
+                                <td>10:45</td>
+                                <td>12:15</td>
+                                <td>Blockchain</td>
+                                <td>EL KSIMI Ali</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>06/04/2026</td>
+                                <td>16:15</td>
+                                <td>17:45</td>
+                                <td>Advanced English 2</td>
+                                <td>OUAHTITA Fatine</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: ABSENCES CONTROLES S2 -->
+            <section id="view-absences-controles-s2" class="content-section">
+                <h1 class="view-title">Absences aux contrôles S2</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cours</th>
+                                <th>Status</th>
+                                <th>Justif.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gestion De Projet</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Entreprenariat</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: ABSENCES COURS S1 -->
+            <section id="view-absences-cours-s1" class="content-section">
+                <h1 class="view-title">Absences aux cours s1</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>HD</th>
+                                <th>HF</th>
+                                <th>Cours</th>
+                                <th>Professeur</th>
+                                <th>Status</th>
+                                <th>Justif.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>16/01/2026</td>
+                                <td>09:00</td>
+                                <td>10:30</td>
+                                <td>Communication Professionnelle 3</td>
+                                <td>ALLAOUI Nadia</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>15/01/2026</td>
+                                <td>08:30</td>
+                                <td>10:00</td>
+                                <td>Recherche Opérationnelle</td>
+                                <td>EL MKHALET Mouna</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/01/2026</td>
+                                <td>10:45</td>
+                                <td>12:15</td>
+                                <td>Advanced English 1</td>
+                                <td>Hajar BENHANIA</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>08/01/2026</td>
+                                <td>08:30</td>
+                                <td>10:00</td>
+                                <td>Recherche Opérationnelle</td>
+                                <td>EL MKHALET Mouna</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>08/01/2026</td>
+                                <td>10:15</td>
+                                <td>11:45</td>
+                                <td>Analyse des Données</td>
+                                <td>EL MKHALET Mouna</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>16/12/2025</td>
+                                <td>10:45</td>
+                                <td>11:45</td>
+                                <td>Machine Learning</td>
+                                <td>CHARIFI Rajaa</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>16/12/2025</td>
+                                <td>14:15</td>
+                                <td>16:15</td>
+                                <td>Dev Mobile</td>
+                                <td>FAGROUD Fatima Zahra</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>16/12/2025</td>
+                                <td>08:30</td>
+                                <td>10:00</td>
+                                <td>Introduction et Éthique de l'IA</td>
+                                <td>CHARIFI Rajaa</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>12/12/2025</td>
+                                <td>09:00</td>
+                                <td>10:30</td>
+                                <td>Communication Professionnelle 3</td>
+                                <td>ALLAOUI Nadia</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/12/2025</td>
+                                <td>10:45</td>
+                                <td>11:45</td>
+                                <td>Machine Learning</td>
+                                <td>CHARIFI Rajaa</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>09/12/2025</td>
+                                <td>08:30</td>
+                                <td>10:00</td>
+                                <td>Introduction et Éthique de l'IA</td>
+                                <td>CHARIFI Rajaa</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: ABSENCES CONTROLES S1 -->
+            <section id="view-absences-controles-s1" class="content-section">
+                <h1 class="view-title">Absences aux contrôles S1</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cours</th>
+                                <th>Status</th>
+                                <th>Justif.</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state">Aucune information</div>
+                </div>
+            </section>
+
+            <!-- VIEW: ABSENCES EXAMENS S1 -->
+            <section id="view-absences-examens-s1" class="content-section">
+                <h1 class="view-title">Absences aux examens S1</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cours</th>
+                                <th>Status</th>
+                                <th>Justif.</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state">Aucune information</div>
+                </div>
+            </section>
+
+            <!-- VIEW: FRAUDES S1 -->
+            <section id="view-fraudes-s1" class="content-section">
+                <h1 class="view-title">Fraudes Examens ou contrôle</h1>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cours</th>
+                                <th>Élément</th>
+                                <th>Commentaire</th>
+                                <th>Type de fraude</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state">No data</div>
+                </div>
+            </section>
+
+            <!-- VIEW: NOTES S1 -->
+            <section id="view-notes-s1" class="content-section">
+                <h1 class="view-title">Relevé de notes S1</h1>
+                
+                <div class="transcript-container">
+                    <!-- MODULE 1 -->
+                    <div class="module-card">
+                        <h2 class="module-title">Mathématiques Appliquées 2</h2>
+                        <div class="module-score">Moyenne finale: 18.42</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Analyse des Données</td>
+                                    <td>18.27</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Recherche Opérationnelle</td>
+                                    <td>18.57</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- MODULE 2 -->
+                    <div class="module-card">
+                        <h2 class="module-title">Langues Étrangères 3</h2>
+                        <div class="module-score">Moyenne finale: 15.37</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Communication Professionnelle 3</td>
+                                    <td>14.27</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Advanced English 1</td>
+                                    <td>16.47</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- MODULE 3 -->
+                    <div class="module-card">
+                        <h2 class="module-title">Techniques De L'IA</h2>
+                        <div class="module-score">Moyenne finale: 12.75</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Introduction et Éthique de L'ia</td>
+                                    <td>13.9</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Machine Learning</td>
+                                    <td>11.6</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- MODULE 4 -->
+                    <div class="module-card">
+                        <h2 class="module-title">Administration unix / Virtualisation</h2>
+                        <div class="module-score">Moyenne finale: 13.79</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Administration Unix</td>
+                                    <td>13.5</td>
+                                    <td>0.5714</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Virtualisation (Cloud)</td>
+                                    <td>14.17</td>
+                                    <td>0.4286</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- MODULE 5 -->
+                    <div class="module-card">
+                        <h2 class="module-title">Développement Java Avancé</h2>
+                        <div class="module-score">Moyenne finale: 16.33</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Java Core & Collections</td>
+                                    <td>16.0</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Framework Spring Boot</td>
+                                    <td>16.66</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- MODULE 6 -->
+                    <div class="module-card">
+                        <h2 class="module-title">NoSQL Et Big Data</h2>
+                        <div class="module-score">Moyenne finale: 11.67</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bases de données NoSQL</td>
+                                    <td>11.00</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Écosystème Big Data (Hadoop/Spark)</td>
+                                    <td>12.34</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- MODULE 7 -->
+                    <div class="module-card">
+                        <h2 class="module-title">Outils De Développement 3</h2>
+                        <div class="module-score">Moyenne finale: 14.74</div>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Note</th>
+                                    <th>Coef</th>
+                                    <th class="result-header">Resultat de module: Validé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>DevOps & Conteneurisation (Docker)</td>
+                                    <td>14.50</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Intégration & Déploiement Continu</td>
+                                    <td>14.98</td>
+                                    <td>0.5</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Javascript SPA controller -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const sections = document.querySelectorAll('.content-section');
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            // Dynamically set user name from email
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const userNameEl = document.getElementById('userName');
+                if (userNameEl) {
+                    const localPart = userEmail.split('@')[0];
+                    const parts = localPart.split('.');
+                    if (parts.length >= 2) {
+                        if (parts[0].toLowerCase() === 'tuteur') {
+                            userNameEl.textContent = 'Tuteur: ' + parts[1];
+                        } else {
+                            // First part (e.g. Aymen) capitalized
+                            const first = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+                            // Second part (e.g. Miad) capitalized or uppercase depending on user preference
+                            // We do LASTNAME Firstname format (e.g. MIAD Aymen)
+                            const last = parts[1].toUpperCase();
+                            userNameEl.textContent = last + ' ' + first;
+                        }
+                    } else {
+                        userNameEl.textContent = localPart.charAt(0).toUpperCase() + localPart.slice(1).toLowerCase();
+                    }
+                }
+            }
+
+            // Responsive Sidebar Toggle
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', () => {
+                if (sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                }
+            });
+            sidebar.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // SPA Routing click handlers
+            menuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Remove active from all menu items
+                    menuItems.forEach(el => el.classList.remove('active'));
+                    // Add active to current
+                    item.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(sec => sec.classList.remove('active'));
+                    
+                    // Show target section
+                    const targetId = item.getAttribute('data-target');
+                    const targetSection = document.getElementById('view-' + targetId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+
+                    // Close sidebar on mobile after clicking
+                    sidebar.classList.remove('open');
+                    
+                    // Smooth scroll top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

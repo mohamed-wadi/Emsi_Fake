@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-container">
+                <img src="logo.png" alt="EMSI Logo" class="logo">
+            </div>
+            
+            <h1 class="title">Connexion</h1>
+            
+            <div class="input-group" onclick="document.getElementById('user-type').click()">
+                <label for="user-type" class="floating-label">Type d'utilisateur*</label>
+                <div class="select-wrapper">
+                    <select id="user-type" class="form-select">
+                        <option value="etudiant" selected>Étudiant</option>
+                        <option value="tuteur">Tuteur</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Student Connect Button -->
+            <button id="btn-ms-login" class="btn-microsoft" onclick="window.location.href='microsoft_login.html'">
+                Se connecter avec Microsoft
+            </button>
+
+            <!-- Tutor Connect Fields (Hidden by default) -->
+            <div id="tutor-fields" style="display: none; width: 100%;">
+                <div class="input-group">
+                    <label for="matricule" class="floating-label">Matricule*</label>
+                    <input type="text" id="matricule" class="form-input" required autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label for="tutor-password" class="floating-label">Mot de passe*</label>
+                    <input type="password" id="tutor-password" class="form-input" required>
+                </div>
+
+                <button id="btn-tutor-submit" class="btn-connect" onclick="doTutorLogin()">
+                    Se connecter
+                </button>
+
+                <div class="forgot-password-container">
+                    <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userTypeSelect = document.getElementById('user-type');
+        const msLoginBtn = document.getElementById('btn-ms-login');
+        const tutorFields = document.getElementById('tutor-fields');
+        const matriculeInput = document.getElementById('matricule');
+        const passwordInput = document.getElementById('tutor-password');
+        const tutorSubmitBtn = document.getElementById('btn-tutor-submit');
+
+        // Toggle fields based on user type selection
+        userTypeSelect.addEventListener('change', () => {
+            if (userTypeSelect.value === 'etudiant') {
+                msLoginBtn.style.display = 'block';
+                tutorFields.style.display = 'none';
+            } else {
+                msLoginBtn.style.display = 'none';
+                tutorFields.style.display = 'block';
+                matriculeInput.focus();
+            }
+        });
+
+        // Toggle button styling based on input completion
+        function updateButtonState() {
+            if (matriculeInput.value.trim() !== '' && passwordInput.value.trim() !== '') {
+                tutorSubmitBtn.classList.add('active');
+            } else {
+                tutorSubmitBtn.classList.remove('active');
+            }
+        }
+
+        matriculeInput.addEventListener('input', updateButtonState);
+        passwordInput.addEventListener('input', updateButtonState);
+
+        // Perform Tutor login
+        function doTutorLogin() {
+            const matricule = matriculeInput.value.trim();
+            const password = passwordInput.value.trim();
+            if (matricule === '' || password === '') {
+                return;
+            }
+            // Save to localStorage as a Tutor profile
+            localStorage.setItem('userEmail', `Tuteur.${matricule}@emsi-edu.ma`);
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
+

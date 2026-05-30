@@ -1,0 +1,1390 @@
+70 steps70 stepsI've explored all pages of the portal. Now let me build the complete HTML clone with all real data and the exact same design!
+Here is the complete source code — one single HTML file that clones every page of the CampuSphere portal:
+html<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CampuSphere Cloud Student Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Fira Sans', sans-serif;
+    background: #f5f5f5;
+    color: rgba(0,0,0,0.87);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── TOP TOOLBAR ── */
+  .toolbar {
+    background: #1972d2;
+    color: #fff;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.3);
+    z-index: 200;
+    flex-shrink: 0;
+  }
+  .toolbar .menu-btn {
+    background: none; border: none; color: #fff;
+    cursor: pointer; padding: 8px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .toolbar .menu-btn:hover { background: rgba(255,255,255,.15); }
+  .toolbar .logo { height: 40px; object-fit: contain; }
+  .toolbar .spacer { flex: 1; }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    background: #fff;
+    border-right: 1px solid rgba(0,0,0,.12);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+    transition: width .3s ease;
+  }
+  .sidebar.collapsed { width: 0; }
+
+  .sidebar-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(0,0,0,.87);
+    padding: 20px 16px 8px 16px;
+    letter-spacing: .5px;
+  }
+  .sidebar-section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(0,0,0,.45);
+  }
+  .sidebar-section-header .material-icons { font-size: 16px; }
+  .sidebar-subsection {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: rgba(0,0,0,.38);
+    padding: 10px 16px 2px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px 10px 8px;
+    font-size: 14px;
+    color: rgba(0,0,0,.75);
+    cursor: pointer;
+    border-radius: 0;
+    transition: background .15s;
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    border-left: 3px solid transparent;
+  }
+  .nav-item:hover { background: rgba(0,0,0,.04); }
+  .nav-item.active {
+    background: rgba(25,118,210,.12);
+    color: #1976d2;
+    font-weight: 600;
+    border-left: 3px solid #1976d2;
+  }
+
+  /* ── SIDEBAR FOOTER ── */
+  .sidebar-footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(0,0,0,.08);
+    padding: 12px 16px;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0,0,0,.75);
+  }
+  .user-info .material-icons { color: rgba(0,0,0,.45); }
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #d32f2f;
+    cursor: pointer;
+    font-weight: 500;
+    background: none; border: none;
+    transition: opacity .2s;
+  }
+  .logout-btn:hover { opacity: .75; }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    background: #fff;
+    padding: 0;
+  }
+
+  .page { display: none; padding: 24px 28px; }
+  .page.active { display: block; }
+  .page-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: rgba(0,0,0,.87);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+
+  /* ── DATA TABLES ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: rgba(0,0,0,.54);
+    border-bottom: 2px solid rgba(0,0,0,.12);
+    background: #fafafa;
+  }
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    color: rgba(0,0,0,.75);
+    vertical-align: middle;
+  }
+  .data-table tr:hover td { background: rgba(0,0,0,.02); }
+  .data-table .badge-justified {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .data-table .badge-pending {
+    display: inline-block;
+    color: rgba(0,0,0,.45);
+    font-size: 14px;
+  }
+  .no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(0,0,0,.38);
+    font-size: 15px;
+  }
+
+  /* ── CALENDAR ── */
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .cal-nav-btn {
+    background: none; border: 1px solid rgba(0,0,0,.2);
+    width: 32px; height: 32px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: background .15s;
+    font-size: 18px; color: rgba(0,0,0,.6);
+  }
+  .cal-nav-btn:hover { background: rgba(0,0,0,.05); }
+  .cal-period {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0,0,0,.75);
+    min-width: 160px;
+  }
+  .cal-expand {
+    margin-left: auto;
+    background: none; border: none; cursor: pointer;
+    color: rgba(0,0,0,.5);
+  }
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: 70px repeat(7, 1fr);
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 4px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .cal-day-header {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-right: 1px solid rgba(0,0,0,.08);
+    background: #fafafa;
+    font-size: 12px;
+  }
+  .cal-day-header .day-name {
+    font-weight: 400;
+    color: rgba(0,0,0,.54);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  .cal-day-header .day-num {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(0,0,0,.75);
+    margin-top: 2px;
+  }
+  .cal-day-header .day-num.today {
+    background: #1976d2;
+    color: #fff;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 2px auto 0;
+  }
+  .cal-corner { border-bottom: 1px solid rgba(0,0,0,.1); background: #fafafa; }
+  .cal-time-slot {
+    padding: 4px 8px;
+    font-size: 11px;
+    color: rgba(0,0,0,.45);
+    text-align: right;
+    border-right: 1px solid rgba(0,0,0,.08);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    height: 60px;
+    vertical-align: top;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 6px;
+  }
+  .cal-cell {
+    border-right: 1px solid rgba(0,0,0,.06);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    height: 60px;
+    position: relative;
+    padding: 2px;
+  }
+  .cal-event {
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 11px;
+    line-height: 1.3;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    left: 2px; right: 2px;
+  }
+  .cal-event.blue {
+    background: #bbdefb;
+    color: #0d47a1;
+  }
+  .cal-event.indigo {
+    background: #c5cae9;
+    color: #1a237e;
+  }
+  .cal-event .ev-title { font-weight: 600; }
+  .cal-event .ev-detail { font-size: 10px; color: inherit; opacity: .8; }
+
+  /* ── NOTES/TRANSCRIPT ── */
+  .module-card {
+    margin-bottom: 28px;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .module-card-header {
+    background: #f5f5f5;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+  }
+  .module-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(0,0,0,.85);
+    margin-bottom: 4px;
+  }
+  .module-avg {
+    font-size: 13px;
+    color: rgba(0,0,0,.54);
+  }
+  .module-avg span {
+    font-weight: 600;
+    color: #1976d2;
+  }
+  .result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .moyenne-semestre {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  /* ── MESSAGES ── */
+  .message-row td { vertical-align: top; padding: 16px; }
+  .message-date { color: rgba(0,0,0,.54); font-size: 13px; white-space: nowrap; }
+  .message-content { color: rgba(0,0,0,.75); font-size: 14px; line-height: 1.5; }
+  .message-content .lire-plus { color: #1976d2; cursor: pointer; font-size: 13px; margin-top: 4px; display: block; }
+
+  /* ── MESURES DISCIPLINAIRES ── */
+  .warning-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff8e1;
+    color: #f57f17;
+    border: 1px solid #ffe082;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ── LOGIN PAGE ── */
+  .login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f5f5f5;
+  }
+  .login-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.12);
+    padding: 40px 48px;
+    width: 420px;
+    max-width: 95vw;
+    text-align: center;
+  }
+  .login-logo { height: 72px; margin-bottom: 20px; }
+  .login-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: rgba(0,0,0,.87);
+    margin-bottom: 28px;
+  }
+  .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    color: rgba(0,0,0,.54);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: inherit;
+    color: rgba(0,0,0,.87);
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+    appearance: auto;
+  }
+  .form-group select:focus { border-color: #1976d2; }
+  .ms-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 4px;
+    background: #fff;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    color: rgba(0,0,0,.75);
+    margin-top: 8px;
+    transition: background .15s, box-shadow .15s;
+  }
+  .ms-login-btn:hover {
+    background: #f5f5f5;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  }
+  .ms-icon {
+    width: 20px; height: 20px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  }
+  .ms-icon span { display: block; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.2); border-radius: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .sidebar { position: absolute; z-index: 100; height: 100%; }
+    .sidebar.collapsed { width: 0; overflow: hidden; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN PAGE  (shown first)
+═══════════════════════════════════════════════ -->
+<div class="login-page" id="loginPage">
+  <div class="login-card">
+    <img src="https://student.emsi.ma/app_logo_emsi.png" alt="EMSI" class="login-logo" onerror="this.style.display='none'; document.getElementById('loginLogoFallback').style.display='block'"/>
+    <div id="loginLogoFallback" style="display:none; font-size:26px; font-weight:700; color:#1976d2; margin-bottom:16px;">
+      EMSI<br/><small style="font-size:12px; color:#555;">ECOLE MAROCAINE DES SCIENCES DE L'INGENIEUR</small>
+    </div>
+    <h2 class="login-title">Connexion</h2>
+    <div class="form-group">
+      <label>Type d'utilisateur*</label>
+      <select>
+        <option value="student" selected>Étudiant</option>
+        <option value="teacher">Professeur</option>
+        <option value="admin">Administration</option>
+      </select>
+    </div>
+    <button class="ms-login-btn" onclick="showPortal()">
+      <div class="ms-icon">
+        <span style="background:#f25022;"></span>
+        <span style="background:#7fba00;"></span>
+        <span style="background:#00a4ef;"></span>
+        <span style="background:#ffb900;"></span>
+      </div>
+      Se connecter avec Microsoft
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN PORTAL  (hidden until login)
+═══════════════════════════════════════════════ -->
+<div id="portal" style="display:none; flex-direction:column; height:100vh;">
+
+  <!-- TOP TOOLBAR -->
+  <div class="toolbar">
+    <button class="menu-btn" onclick="toggleSidebar()">
+      <span class="material-icons">menu</span>
+    </button>
+    <img src="https://student.emsi.ma/app_logo_emsi.png" alt="EMSI" class="logo"
+         onerror="this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:16px;\'>EMSI</span>'"/>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-title">Navigation</div>
+
+      <!-- INFORMATIONS GÉNÉRALES -->
+      <div class="sidebar-section-header">
+        <span class="material-icons" style="font-size:16px;color:rgba(0,0,0,.45)">menu_book</span>
+        INFORMATIONS GÉNÉRALES
+      </div>
+      <a class="nav-item" onclick="showPage('calendrier')">Calendrier</a>
+      <a class="nav-item" onclick="showPage('mesures')">Mesures disciplinaires</a>
+
+      <!-- SEMESTRE 2 -->
+      <div class="sidebar-section-header">
+        <span class="material-icons" style="font-size:16px;">looks_two</span>
+        SEMESTRE 2
+      </div>
+      <div class="sidebar-subsection">Suivi pédagogique</div>
+      <a class="nav-item" onclick="showPage('notes-s2')">Notes pédagogiques S2</a>
+      <div class="sidebar-subsection">Assiduité</div>
+      <a class="nav-item" onclick="showPage('absences-cours-s2')">Absences aux cours S2</a>
+      <a class="nav-item" onclick="showPage('absences-controles-s2')">Absences aux contrôles s2</a>
+
+      <!-- SEMESTRE 1 -->
+      <div class="sidebar-section-header">
+        <span class="material-icons" style="font-size:16px;">looks_one</span>
+        SEMESTRE 1
+      </div>
+      <div class="sidebar-subsection">Assiduité</div>
+      <a class="nav-item" onclick="showPage('absences-cours-s1')">Absences aux cours s1</a>
+      <a class="nav-item" onclick="showPage('absences-controles-s1')">Absences aux contrôles s1</a>
+      <a class="nav-item" onclick="showPage('absences-examens-s1')">Absences aux examens s1</a>
+      <div class="sidebar-subsection">Incidents</div>
+      <a class="nav-item" onclick="showPage('fraudes')">Fraudes s1</a>
+      <div class="sidebar-subsection">Résultats</div>
+      <a class="nav-item" onclick="showPage('releve')">Relevé de notes S1</a>
+
+      <!-- FOOTER -->
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <span class="material-icons">person</span>
+          WADI Mohamed
+        </div>
+        <button class="logout-btn" onclick="logout()">
+          <span class="material-icons">logout</span>
+          Déconnexion
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- ════ CALENDRIER ════ -->
+      <div id="page-calendrier" class="page active">
+        <h1 class="page-title">Calendrier</h1>
+        <div class="calendar-header">
+          <button class="cal-nav-btn" onclick="calPrev()">&#8249;</button>
+          <span class="cal-period" id="calPeriod">25-31 May 2026</span>
+          <button class="cal-nav-btn" onclick="calNext()">&#8250;</button>
+          <button class="cal-expand" title="Expand">
+            <span class="material-icons" style="font-size:20px;">expand_more</span>
+          </button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+
+      <!-- ════ MESURES DISCIPLINAIRES ════ -->
+      <div id="page-mesures" class="page">
+        <h1 class="page-title">État des mesures disciplinaires pour absentéisme</h1>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date de generation</th>
+              <th>Avertissement</th>
+              <th>Nombre des absences</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>09/03/2026</td>
+              <td><span class="warning-badge">⚠ Avertissement Oral</span></td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ════ NOTES PÉDAGOGIQUES S2 ════ -->
+      <div id="page-notes-s2" class="page">
+        <h1 class="page-title">Messages — Notes pédagogiques S2</h1>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date publication</th>
+              <th>Contenu</th>
+              <th>Document</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="message-row">
+              <td class="message-date">14/05/2026 16:01</td>
+              <td class="message-content">
+                Les étudiants de la 4ème Année Cybersécurité et Infrastructure Réseaux G3 sont informés qu'un rattrapage en GESTION DE PROJET aura lieu à L'EMSI ROUDANI vendredi 15/05/2026 dans la salle LI11 de 16h15 à 17h45.
+                <a class="lire-plus">Lire plus</a>
+              </td>
+              <td><span class="badge-pending">—</span></td>
+            </tr>
+            <tr class="message-row">
+              <td class="message-date">13/05/2026 11:38</td>
+              <td class="message-content">Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Gestion Des Incidents aura lieu Lundi 18/05/2026 dans la salle Li11 de 12h15 à 13h45.</td>
+              <td><span class="badge-pending">—</span></td>
+            </tr>
+            <tr class="message-row">
+              <td class="message-date">24/04/2026 08:21</td>
+              <td class="message-content">Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Advanced English 2 aura lieu Mardi 19/05/2026 dans la salle Li12 de 10h30 à 12h15.</td>
+              <td><span class="badge-pending">—</span></td>
+            </tr>
+            <tr class="message-row">
+              <td class="message-date">24/04/2026 08:18</td>
+              <td class="message-content">Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Advanced English 2 aura lieu Mardi 12/05/2026 dans la salle Li12 de 09h00 à 12h15.</td>
+              <td><span class="badge-pending">—</span></td>
+            </tr>
+            <tr class="message-row">
+              <td class="message-date">23/02/2026 11:10</td>
+              <td class="message-content">
+                Objet: Note d'absence<br/>Les Etudiants de la 4ème Année CIRM G3, G4 &amp; G5 sont informés que le cours d'Anglais n'aura pas lieu le Lundi 23/02/2026 et qu'un Rattrapage sera programmé ultèrieurement.
+                <a class="lire-plus">Lire plus</a>
+              </td>
+              <td><span class="badge-pending">—</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ════ ABSENCES COURS S2 ════ -->
+      <div id="page-absences-cours-s2" class="page">
+        <h1 class="page-title">Absences aux cours s2</h1>
+        <table class="data-table">
+          <thead>
+            <tr><th>Date</th><th>HD</th><th>HF</th><th>Cours</th><th>Professeur</th><th>Status</th><th>Justif.</th></tr>
+          </thead>
+          <tbody id="absCoursS2Body"></tbody>
+        </table>
+      </div>
+
+      <!-- ════ ABSENCES CONTRÔLES S2 ════ -->
+      <div id="page-absences-controles-s2" class="page">
+        <h1 class="page-title">Absences aux contrôles S2</h1>
+        <table class="data-table">
+          <thead>
+            <tr><th>Cours</th><th>Status</th><th>Justif.</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Gestion De Projet</td><td><span class="badge-pending">-</span></td><td></td></tr>
+            <tr><td>Entreprenariat</td><td><span class="badge-pending">-</span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ════ ABSENCES COURS S1 ════ -->
+      <div id="page-absences-cours-s1" class="page">
+        <h1 class="page-title">Absences aux cours s1</h1>
+        <table class="data-table">
+          <thead>
+            <tr><th>Date</th><th>HD</th><th>HF</th><th>Cours</th><th>Professeur</th><th>Status</th><th>Justif.</th></tr>
+          </thead>
+          <tbody id="absCoursS1Body"></tbody>
+        </table>
+      </div>
+
+      <!-- ════ ABSENCES CONTRÔLES S1 ════ -->
+      <div id="page-absences-controles-s1" class="page">
+        <h1 class="page-title">Absences aux contrôles S1</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody>
+            <tr><td colspan="3" class="no-data">Aucune information</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ════ ABSENCES EXAMENS S1 ════ -->
+      <div id="page-absences-examens-s1" class="page">
+        <h1 class="page-title">Absences aux examens S1</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody>
+            <tr><td colspan="3" class="no-data">Aucune information</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ════ FRAUDES ════ -->
+      <div id="page-fraudes" class="page">
+        <h1 class="page-title">Fraudes Examens ou contrôle</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Élément</th><th>Commentaire</th><th>Type de fraude</th></tr></thead>
+          <tbody>
+            <tr><td colspan="4" class="no-data">No data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ════ RELEVÉ DE NOTES S1 ════ -->
+      <div id="page-releve" class="page">
+        <h1 class="page-title">Relevé de notes S1</h1>
+        <div class="moyenne-semestre">Moyenne du Semestre: <strong>--</strong></div>
+        <div id="transcriptContent"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   DATA
+════════════════════════════════════ */
+const absCoursS2 = [
+  {date:'15/05/2026',hd:'14:30',hf:'16:00',cours:'Communication Professionnelle 4',prof:'HAMDI Rachid',status:'justifié',justif:'Certificat Médical'},
+  {date:'14/05/2026',hd:'16:15',hf:'18:15',cours:'Mise En Place Et Sécurité Des VPN',prof:'FETJAH Laila',status:'justifié',justif:'Certificat Médical'},
+  {date:'13/05/2026',hd:'11:15',hf:'13:15',cours:'Sécurité Des Applications Web',prof:'OUAGUID Abdellah',status:'justifié',justif:'Certificat Médical'},
+  {date:'13/05/2026',hd:'09:00',hf:'11:00',cours:'Gestion Des Intrusions',prof:'BOUKRI Khalil',status:'justifié',justif:'Certificat Médical'},
+  {date:'13/05/2026',hd:'16:15',hf:'17:45',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'justifié',justif:'Certificat Médical'},
+  {date:'24/04/2026',hd:'08:30',hf:'10:00',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'24/04/2026',hd:'10:15',hf:'11:45',cours:'Gestion De Projet',prof:'MONSIF Dounia',status:'-',justif:''},
+  {date:'23/04/2026',hd:'16:15',hf:'18:15',cours:'Mise En Place Et Sécurité Des VPN',prof:'FETJAH Laila',status:'-',justif:''},
+  {date:'17/04/2026',hd:'08:30',hf:'10:00',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'09/04/2026',hd:'14:30',hf:'16:00',cours:'Supervision Des Réseaux',prof:'KHIAT Azeeddine',status:'-',justif:''},
+  {date:'09/04/2026',hd:'16:15',hf:'18:15',cours:'Mise En Place Et Sécurité Des VPN',prof:'FETJAH Laila',status:'-',justif:''},
+  {date:'09/04/2026',hd:'09:00',hf:'10:30',cours:'Blockchain',prof:'EL KSIMI Ali',status:'-',justif:''},
+  {date:'09/04/2026',hd:'10:45',hf:'12:15',cours:'Blockchain',prof:'EL KSIMI Ali',status:'-',justif:''},
+  {date:'06/04/2026',hd:'16:15',hf:'17:45',cours:'Advanced English 2',prof:'OUAHTITA Fatine',status:'-',justif:''},
+  {date:'01/04/2026',hd:'16:15',hf:'17:45',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'-',justif:''},
+  {date:'01/04/2026',hd:'09:00',hf:'11:00',cours:'Gestion Des Intrusions',prof:'BOUKRI Khalil',status:'-',justif:''},
+  {date:'01/04/2026',hd:'11:15',hf:'13:15',cours:'Sécurité Des Applications Web',prof:'OUAGUID Abdellah',status:'-',justif:''},
+  {date:'27/03/2026',hd:'08:30',hf:'10:00',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'18/03/2026',hd:'15:00',hf:'16:15',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'-',justif:''},
+  {date:'14/03/2026',hd:'09:15',hf:'10:45',cours:'Projet',prof:'CHIBA Zouhair',status:'-',justif:''},
+  {date:'06/03/2026',hd:'09:15',hf:'10:45',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'04/03/2026',hd:'15:00',hf:'16:15',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'-',justif:''},
+  {date:'04/03/2026',hd:'11:00',hf:'12:30',cours:'Sécurité Des Applications Web',prof:'OUAGUID Abdellah',status:'-',justif:''},
+  {date:'04/03/2026',hd:'09:15',hf:'10:45',cours:'Gestion Des Intrusions',prof:'BOUKRI Khalil',status:'-',justif:''},
+  {date:'27/02/2026',hd:'11:00',hf:'12:30',cours:'Gestion De Projet',prof:'MONSIF Dounia',status:'justifié',justif:'Certificat Médical'},
+  {date:'27/02/2026',hcontinue1 step1 stepVoici la suite et la version complète du fichier HTML clone ! Copiez tout ce code dans un fichier .html :
+html<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CampuSphere Cloud Student Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Fira Sans',sans-serif;background:#f5f5f5;color:rgba(0,0,0,.87);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+/* TOOLBAR */
+.toolbar{background:#1972d2;color:#fff;height:64px;display:flex;align-items:center;padding:0 16px;gap:16px;box-shadow:0 2px 4px rgba(0,0,0,.3);z-index:200;flex-shrink:0;}
+.toolbar .menu-btn{background:none;border:none;color:#fff;cursor:pointer;padding:8px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.toolbar .menu-btn:hover{background:rgba(255,255,255,.15);}
+.toolbar .logo{height:42px;object-fit:contain;}
+
+/* LAYOUT */
+.layout{display:flex;flex:1;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:260px;background:#fff;border-right:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;flex-shrink:0;transition:width .25s ease;}
+.sidebar.collapsed{width:0;}
+.sidebar-title{font-size:13px;font-weight:700;color:rgba(0,0,0,.87);padding:18px 16px 8px 16px;letter-spacing:.5px;}
+.sidebar-section{display:flex;align-items:center;gap:6px;padding:14px 16px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(0,0,0,.45);}
+.sidebar-section .material-icons{font-size:16px;}
+.sidebar-sub{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(0,0,0,.35);padding:10px 16px 2px;}
+.nav-item{display:flex;align-items:center;padding:10px 16px 10px 12px;font-size:14px;color:rgba(0,0,0,.72);cursor:pointer;text-decoration:none;white-space:nowrap;user-select:none;border-left:3px solid transparent;transition:background .15s,color .15s;}
+.nav-item:hover{background:rgba(0,0,0,.04);}
+.nav-item.active{background:rgba(25,118,210,.12);color:#1976d2;font-weight:600;border-left:3px solid #1976d2;}
+
+/* SIDEBAR FOOTER */
+.sidebar-footer{margin-top:auto;border-top:1px solid rgba(0,0,0,.08);padding:10px 16px 16px;}
+.user-info{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px;font-weight:500;color:rgba(0,0,0,.75);}
+.user-info .material-icons{color:rgba(0,0,0,.45);font-size:22px;}
+.logout-btn{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:14px;color:#d32f2f;cursor:pointer;font-weight:500;background:none;border:none;font-family:inherit;transition:opacity .2s;}
+.logout-btn:hover{opacity:.7;}
+
+/* MAIN */
+.main-content{flex:1;overflow-y:auto;background:#fff;}
+.page{display:none;padding:28px 32px;}
+.page.active{display:block;}
+.page-title{font-size:21px;font-weight:500;color:rgba(0,0,0,.85);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,.09);}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:14px;}
+.data-table th{text-align:left;padding:11px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(0,0,0,.52);border-bottom:2px solid rgba(0,0,0,.1);background:#fafafa;}
+.data-table td{padding:12px 16px;border-bottom:1px solid rgba(0,0,0,.07);color:rgba(0,0,0,.75);vertical-align:middle;}
+.data-table tr:hover td{background:rgba(0,0,0,.015);}
+.badge-ok{display:inline-block;background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;}
+.badge-warn{display:inline-flex;align-items:center;gap:5px;background:#fff8e1;color:#f57f17;border:1px solid #ffe082;padding:4px 12px;border-radius:12px;font-size:13px;font-weight:600;}
+.badge-dash{color:rgba(0,0,0,.38);font-size:15px;}
+.no-data{text-align:center;padding:60px 20px;color:rgba(0,0,0,.35);font-size:15px;}
+
+/* CALENDAR */
+.cal-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.cal-nav{background:none;border:1px solid rgba(0,0,0,.18);width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:rgba(0,0,0,.55);transition:background .15s;}
+.cal-nav:hover{background:rgba(0,0,0,.05);}
+.cal-period{font-size:15px;font-weight:500;color:rgba(0,0,0,.75);min-width:180px;}
+.calendar-grid{display:grid;grid-template-columns:68px repeat(7,1fr);border:1px solid rgba(0,0,0,.1);border-radius:4px;overflow:hidden;font-size:12px;min-width:900px;}
+.cal-corner{background:#fafafa;border-bottom:1px solid rgba(0,0,0,.1);border-right:1px solid rgba(0,0,0,.08);}
+.cal-day-hdr{padding:8px 4px;text-align:center;border-bottom:1px solid rgba(0,0,0,.1);border-right:1px solid rgba(0,0,0,.07);background:#fafafa;}
+.cal-day-hdr .dn{font-size:10px;font-weight:600;text-transform:uppercase;color:rgba(0,0,0,.45);letter-spacing:.5px;}
+.cal-day-hdr .dd{font-size:22px;font-weight:300;color:rgba(0,0,0,.72);margin-top:2px;}
+.cal-day-hdr .dd.today{background:#1976d2;color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;margin:2px auto 0;font-size:18px;font-weight:500;}
+.cal-time{padding:4px 8px;font-size:10px;color:rgba(0,0,0,.4);text-align:right;border-right:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.06);height:64px;display:flex;align-items:flex-start;justify-content:flex-end;padding-top:5px;}
+.cal-cell{border-right:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);height:64px;position:relative;padding:2px;}
+.ev{border-radius:4px;padding:4px 6px;font-size:10px;line-height:1.3;position:absolute;left:2px;right:2px;overflow:hidden;cursor:pointer;}
+.ev.blue{background:#bbdefb;color:#0d47a1;}
+.ev.indigo{background:#c5cae9;color:#1a237e;}
+.ev .et{font-weight:700;}
+.ev .ed{opacity:.8;margin-top:1px;}
+
+/* TRANSCRIPT */
+.sem-avg{background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;padding:14px 20px;border-radius:6px;margin-bottom:24px;font-size:15px;font-weight:500;}
+.module-card{margin-bottom:24px;border:1px solid rgba(0,0,0,.1);border-radius:6px;overflow:hidden;}
+.module-hdr{background:#f5f5f5;padding:13px 20px;border-bottom:1px solid rgba(0,0,0,.08);}
+.module-name{font-size:15px;font-weight:600;color:rgba(0,0,0,.84);margin-bottom:3px;}
+.module-moy{font-size:13px;color:rgba(0,0,0,.52);}
+.module-moy b{color:#1976d2;}
+.validated{display:inline-flex;align-items:center;gap:4px;background:#e8f5e9;color:#2e7d32;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;}
+
+/* MESSAGES */
+.msg-date{color:rgba(0,0,0,.52);font-size:13px;white-space:nowrap;padding:14px 16px;vertical-align:top;}
+.msg-body{padding:14px 16px;font-size:14px;line-height:1.55;color:rgba(0,0,0,.75);vertical-align:top;}
+.lire-plus{color:#1976d2;cursor:pointer;font-size:13px;margin-top:5px;display:inline-block;}
+
+/* LOGIN */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5;flex-direction:column;}
+.login-card{background:#fff;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.12);padding:44px 52px;width:420px;max-width:95vw;text-align:center;}
+.login-logo{height:76px;margin-bottom:16px;object-fit:contain;}
+.login-title{font-size:24px;font-weight:500;margin-bottom:28px;}
+.form-grp{text-align:left;margin-bottom:18px;}
+.form-grp label{display:block;font-size:12px;color:rgba(0,0,0,.52);margin-bottom:5px;font-weight:600;}
+.form-grp select{width:100%;padding:11px 12px;border:1px solid rgba(0,0,0,.22);border-radius:4px;font-size:14px;font-family:inherit;color:rgba(0,0,0,.85);background:#fff;outline:none;cursor:pointer;}
+.form-grp select:focus{border-color:#1976d2;}
+.ms-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px;border:1px solid rgba(0,0,0,.2);border-radius:4px;background:#fff;font-size:14px;font-family:inherit;cursor:pointer;color:rgba(0,0,0,.72);margin-top:6px;transition:background .15s,box-shadow .15s;}
+.ms-btn:hover{background:#f5f5f5;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:20px;height:20px;}
+.ms-grid span{display:block;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+@media(max-width:768px){
+  .sidebar{position:absolute;z-index:100;height:calc(100% - 64px);top:64px;}
+  .sidebar.collapsed{width:0;overflow:hidden;}
+  .page{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ LOGIN PAGE ══════════════════════ -->
+<div id="loginPage">
+  <div class="login-card">
+    <img src="https://student.emsi.ma/app_logo_emsi.png" alt="EMSI" class="login-logo"
+         onerror="this.style.display='none';document.getElementById('logoFb').style.display='block'"/>
+    <div id="logoFb" style="display:none;margin-bottom:14px;">
+      <div style="font-size:28px;font-weight:800;color:#1976d2;letter-spacing:2px;">EMSI</div>
+      <div style="font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;">Ecole Marocaine des Sciences de l'Ingénieur</div>
+    </div>
+    <h2 class="login-title">Connexion</h2>
+    <div class="form-grp">
+      <label>Type d'utilisateur *</label>
+      <select id="userType">
+        <option value="student" selected>Étudiant</option>
+        <option value="teacher">Professeur</option>
+        <option value="admin">Administration</option>
+      </select>
+    </div>
+    <button class="ms-btn" onclick="doLogin()">
+      <div class="ms-grid">
+        <span style="background:#f25022;"></span>
+        <span style="background:#7fba00;"></span>
+        <span style="background:#00a4ef;"></span>
+        <span style="background:#ffb900;"></span>
+      </div>
+      Se connecter avec Microsoft
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════ PORTAL ══════════════════════ -->
+<div id="portal" style="display:none;flex-direction:column;height:100vh;">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="menu-btn" onclick="toggleSidebar()">
+      <span class="material-icons">menu</span>
+    </button>
+    <img src="https://student.emsi.ma/app_logo_emsi.png" alt="EMSI" class="logo"
+         onerror="this.outerHTML='<span style=&quot;color:#fff;font-weight:800;font-size:18px;letter-spacing:2px;&quot;>EMSI</span>'"/>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-title">Navigation</div>
+
+      <div class="sidebar-section">
+        <span class="material-icons" style="font-size:15px;">menu_book</span>
+        Informations générales
+      </div>
+      <a class="nav-item" onclick="showPage('calendrier')">Calendrier</a>
+      <a class="nav-item" onclick="showPage('mesures')">Mesures disciplinaires</a>
+
+      <div class="sidebar-section">
+        <span class="material-icons" style="font-size:15px;">looks_two</span>
+        Semestre 2
+      </div>
+      <div class="sidebar-sub">Suivi pédagogique</div>
+      <a class="nav-item" onclick="showPage('notes-s2')">Notes pédagogiques S2</a>
+      <div class="sidebar-sub">Assiduité</div>
+      <a class="nav-item" onclick="showPage('abs-cours-s2')">Absences aux cours S2</a>
+      <a class="nav-item" onclick="showPage('abs-ctrl-s2')">Absences aux contrôles s2</a>
+
+      <div class="sidebar-section">
+        <span class="material-icons" style="font-size:15px;">looks_one</span>
+        Semestre 1
+      </div>
+      <div class="sidebar-sub">Assiduité</div>
+      <a class="nav-item" onclick="showPage('abs-cours-s1')">Absences aux cours s1</a>
+      <a class="nav-item" onclick="showPage('abs-ctrl-s1')">Absences aux contrôles s1</a>
+      <a class="nav-item" onclick="showPage('abs-exam-s1')">Absences aux examens s1</a>
+      <div class="sidebar-sub">Incidents</div>
+      <a class="nav-item" onclick="showPage('fraudes')">Fraudes s1</a>
+      <div class="sidebar-sub">Résultats</div>
+      <a class="nav-item" onclick="showPage('releve')">Relevé de notes S1</a>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <span class="material-icons">person</span>
+          WADI Mohamed
+        </div>
+        <button class="logout-btn" onclick="doLogout()">
+          <span class="material-icons">logout</span>
+          Déconnexion
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- ══ CALENDRIER ══ -->
+      <div id="page-calendrier" class="page active">
+        <h1 class="page-title">Calendrier</h1>
+        <div class="cal-header">
+          <button class="cal-nav" onclick="calMove(-1)">&#8249;</button>
+          <span class="cal-period" id="calLabel">25-31 May 2026</span>
+          <button class="cal-nav" onclick="calMove(1)">&#8250;</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <div class="calendar-grid" id="calGrid"></div>
+        </div>
+      </div>
+
+      <!-- ══ MESURES ══ -->
+      <div id="page-mesures" class="page">
+        <h1 class="page-title">État des mesures disciplinaires pour absentéisme</h1>
+        <table class="data-table">
+          <thead><tr><th>Date de generation</th><th>Avertissement</th><th>Nombre des absences</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>09/03/2026</td>
+              <td><span class="badge-warn">⚠ Avertissement Oral</span></td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══ NOTES S2 (Messages) ══ -->
+      <div id="page-notes-s2" class="page">
+        <h1 class="page-title">Messages — Notes pédagogiques S2</h1>
+        <table class="data-table">
+          <thead><tr><th>Date publication</th><th>Contenu</th><th>Document</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="msg-date">14/05/2026 16:01</td>
+              <td class="msg-body">
+                Les étudiants de la 4ème Année Cybersécurité et Infrastructure Réseaux G3 sont informés qu'un rattrapage en GESTION DE PROJET aura lieu à L'EMSI ROUDANI vendredi 15/05/2026 dans la salle LI11 de 16h15 à 17h45.
+                <a class="lire-plus">Lire plus</a>
+              </td>
+              <td><span class="badge-dash">—</span></td>
+            </tr>
+            <tr>
+              <td class="msg-date">13/05/2026 11:38</td>
+              <td class="msg-body">Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Gestion Des Incidents aura lieu Lundi 18/05/2026 dans la salle Li11 de 12h15 à 13h45.</td>
+              <td><span class="badge-dash">—</span></td>
+            </tr>
+            <tr>
+              <td class="msg-date">24/04/2026 08:21</td>
+              <td class="msg-body">Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Advanced English 2 aura lieu Mardi 19/05/2026 dans la salle Li12 de 10h30 à 12h15.</td>
+              <td><span class="badge-dash">—</span></td>
+            </tr>
+            <tr>
+              <td class="msg-date">24/04/2026 08:18</td>
+              <td class="msg-body">Les étudiants de la 4ème C.I.R sont informés qu'un rattrapage en Advanced English 2 aura lieu Mardi 12/05/2026 dans la salle Li12 de 09h00 à 12h15.</td>
+              <td><span class="badge-dash">—</span></td>
+            </tr>
+            <tr>
+              <td class="msg-date">23/02/2026 11:10</td>
+              <td class="msg-body">
+                Objet: Note d'absence<br>
+                Les Etudiants de la 4ème Année CIRM G3, G4 &amp; G5 sont informés que le cours d'Anglais n'aura pas lieu le Lundi 23/02/2026 et qu'un Rattrapage sera programmé ultèrieurement.
+                <a class="lire-plus">Lire plus</a>
+              </td>
+              <td><span class="badge-dash">—</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══ ABSENCES COURS S2 ══ -->
+      <div id="page-abs-cours-s2" class="page">
+        <h1 class="page-title">Absences aux cours s2</h1>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>HD</th><th>HF</th><th>Cours</th><th>Professeur</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody id="tbAbsCoursS2"></tbody>
+        </table>
+      </div>
+
+      <!-- ══ ABSENCES CONTRÔLES S2 ══ -->
+      <div id="page-abs-ctrl-s2" class="page">
+        <h1 class="page-title">Absences aux contrôles S2</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody>
+            <tr><td>Gestion De Projet</td><td><span class="badge-dash">-</span></td><td></td></tr>
+            <tr><td>Entreprenariat</td><td><span class="badge-dash">-</span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══ ABSENCES COURS S1 ══ -->
+      <div id="page-abs-cours-s1" class="page">
+        <h1 class="page-title">Absences aux cours s1</h1>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>HD</th><th>HF</th><th>Cours</th><th>Professeur</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody id="tbAbsCoursS1"></tbody>
+        </table>
+      </div>
+
+      <!-- ══ ABSENCES CONTRÔLES S1 ══ -->
+      <div id="page-abs-ctrl-s1" class="page">
+        <h1 class="page-title">Absences aux contrôles S1</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody><tr><td colspan="3" class="no-data">Aucune information</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- ══ ABSENCES EXAMENS S1 ══ -->
+      <div id="page-abs-exam-s1" class="page">
+        <h1 class="page-title">Absences aux examens S1</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Status</th><th>Justif.</th></tr></thead>
+          <tbody><tr><td colspan="3" class="no-data">Aucune information</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- ══ FRAUDES ══ -->
+      <div id="page-fraudes" class="page">
+        <h1 class="page-title">Fraudes Examens ou contrôle</h1>
+        <table class="data-table">
+          <thead><tr><th>Cours</th><th>Élément</th><th>Commentaire</th><th>Type de fraude</th></tr></thead>
+          <tbody><tr><td colspan="4" class="no-data">No data</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- ══ RELEVÉ DE NOTES S1 ══ -->
+      <div id="page-releve" class="page">
+        <h1 class="page-title">Relevé de notes S1</h1>
+        <div class="sem-avg">Moyenne du Semestre : <strong>--</strong></div>
+        <div id="transcriptContent"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════ DATA ═══════════════════ */
+
+const ABS_COURS_S2 = [
+  {date:'15/05/2026',hd:'14:30',hf:'16:00',cours:'Communication Professionnelle 4',prof:'HAMDI Rachid',status:'justifié',justif:'Certificat Médical'},
+  {date:'14/05/2026',hd:'16:15',hf:'18:15',cours:'Mise En Place Et Sécurité Des VPN',prof:'FETJAH Laila',status:'justifié',justif:'Certificat Médical'},
+  {date:'13/05/2026',hd:'11:15',hf:'13:15',cours:'Sécurité Des Applications Web',prof:'OUAGUID Abdellah',status:'justifié',justif:'Certificat Médical'},
+  {date:'13/05/2026',hd:'09:00',hf:'11:00',cours:'Gestion Des Intrusions',prof:'BOUKRI Khalil',status:'justifié',justif:'Certificat Médical'},
+  {date:'13/05/2026',hd:'16:15',hf:'17:45',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'justifié',justif:'Certificat Médical'},
+  {date:'24/04/2026',hd:'08:30',hf:'10:00',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'24/04/2026',hd:'10:15',hf:'11:45',cours:'Gestion De Projet',prof:'MONSIF Dounia',status:'-',justif:''},
+  {date:'23/04/2026',hd:'16:15',hf:'18:15',cours:'Mise En Place Et Sécurité Des VPN',prof:'FETJAH Laila',status:'-',justif:''},
+  {date:'17/04/2026',hd:'08:30',hf:'10:00',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'09/04/2026',hd:'14:30',hf:'16:00',cours:'Supervision Des Réseaux',prof:'KHIAT Azeeddine',status:'-',justif:''},
+  {date:'09/04/2026',hd:'16:15',hf:'18:15',cours:'Mise En Place Et Sécurité Des VPN',prof:'FETJAH Laila',status:'-',justif:''},
+  {date:'09/04/2026',hd:'09:00',hf:'10:30',cours:'Blockchain',prof:'EL KSIMI Ali',status:'-',justif:''},
+  {date:'09/04/2026',hd:'10:45',hf:'12:15',cours:'Blockchain',prof:'EL KSIMI Ali',status:'-',justif:''},
+  {date:'06/04/2026',hd:'16:15',hf:'17:45',cours:'Advanced English 2',prof:'OUAHTITA Fatine',status:'-',justif:''},
+  {date:'01/04/2026',hd:'16:15',hf:'17:45',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'-',justif:''},
+  {date:'01/04/2026',hd:'09:00',hf:'11:00',cours:'Gestion Des Intrusions',prof:'BOUKRI Khalil',status:'-',justif:''},
+  {date:'01/04/2026',hd:'11:15',hf:'13:15',cours:'Sécurité Des Applications Web',prof:'OUAGUID Abdellah',status:'-',justif:''},
+  {date:'27/03/2026',hd:'08:30',hf:'10:00',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'18/03/2026',hd:'15:00',hf:'16:15',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'-',justif:''},
+  {date:'14/03/2026',hd:'09:15',hf:'10:45',cours:'Projet',prof:'CHIBA Zouhair',status:'-',justif:''},
+  {date:'06/03/2026',hd:'09:15',hf:'10:45',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'-',justif:''},
+  {date:'04/03/2026',hd:'15:00',hf:'16:15',cours:'Sécurité Des Applications Mobile',prof:'ENNAJI Mohamed',status:'-',justif:''},
+  {date:'04/03/2026',hd:'11:00',hf:'12:30',cours:'Sécurité Des Applications Web',prof:'OUAGUID Abdellah',status:'-',justif:''},
+  {date:'04/03/2026',hd:'09:15',hf:'10:45',cours:'Gestion Des Intrusions',prof:'BOUKRI Khalil',status:'-',justif:''},
+  {date:'27/02/2026',hd:'11:00',hf:'12:30',cours:'Gestion De Projet',prof:'MONSIF Dounia',status:'justifié',justif:'Certificat Médical'},
+  {date:'27/02/2026',hd:'09:15',hf:'10:45',cours:'Entreprenariat',prof:'AIT LARBI Yousra',status:'justifié',justif:'Certificat Médical'},
+  {date:'27/02/2026',hd:'13:30',hf:'14:45',cours:'Communication Professionnelle 4',prof:'HAMDI Rachid',status:'justifié',justif:'Certificat Médical'},
+  {date:'26/02/2026',hd:'11:00',hf:'12:30',cours:'Blockchain',prof:'EL KSIMI Ali',status:'justifié',justif:'Certificat Médical'},
+  {date:'26/02/2026',hd:'13:30',hf:'14:45',cours:'Supervision Des Réseaux',prof:'KHIAT Azeeddine',status:'justifié',justif:'Certificat Médical'},
+  {date:'26/02/2026',hd:'09:15',hf:'10:45',cours:'Blockchain',prof:'EL KSIMI Ali',status:'justifié',justif:'Certificat Médical'},
+  {date:'20/02/2026',hd:'13:30',hf:'14:45',cours:'Communication Professionnelle 4',prof:'HAMDI Rachid',status:'-',justif:''},
+];
+
+const ABS_COURS_S1 = [
+  {date:'16/01/2026',hd:'09:00',hf:'10:30',cours:'Communication Professionnelle 3',prof:'ALLAOUI Nadia',status:'-',justif:''},
+  {date:'15/01/2026',hd:'08:30',hf:'10:00',cours:'Recherche Opérationnelle',prof:'EL MKHALET Mouna',status:'-',justif:''},
+  {date:'09/01/2026',hd:'10:45',hf:'12:15',cours:'Advanced English 1',prof:'Hajar BENHANIA',status:'-',justif:''},
+  {date:'08/01/2026',hd:'10:15',hf:'11:45',cours:'Analyse des Données',prof:'EL MKHALET Mouna',status:'-',justif:''},
+  {date:'08/01/2026',hd:'08:30',hf:'10:00',cours:'Recherche Opérationnelle',prof:'EL MKHALET Mouna',status:'-',justif:''},
+  {date:'16/12/2025',hd:'10:45',hf:'11:45',cours:'Machine Learning',prof:'CHARIFI Rajaa',status:'-',justif:''},
+  {date:'16/12/2025',hd:'08:30',hf:'10:00',cours:"Introduction et Éthique de L'Ia",prof:'CHARIFI Rajaa',status:'-',justif:''},
+  {date:'16/12/2025',hd:'14:15',hf:'16:15',cours:'Dev Mobile',prof:'FAGROUD Fatima Zahra',status:'-',justif:''},
+  {date:'12/12/2025',hd:'09:00',hf:'10:30',cours:'Communication Professionnelle 3',prof:'ALLAOUI Nadia',status:'-',justif:''},
+  {date:'09/12/2025',hd:'10:45',hf:'11:45',cours:'Machine Learning',prof:'CHARIFI Rajaa',status:'-',justif:''},
+  {date:'09/12/2025',hd:'08:30',hf:'10:00',cours:"Introduction et Éthique de L'Ia",prof:'CHARIFI Rajaa',status:'-',justif:''},
+  {date:'28/10/2025',hd:'08:30',hf:'10:00',cours:"Introduction et Éthique de L'Ia",prof:'CHARIFI Rajaa',status:'-',justif:''},
+  {date:'16/10/2025',hd:'10:15',hf:'11:45',cours:'Analyse des Données',prof:'EL MKHALET Mouna',status:'-',justif:''},
+  {date:'16/10/2025',hd:'08:30',hf:'10:00',cours:'Recherche Opérationnelle',prof:'EL MKHALET Mouna',status:'-',justif:''},
+];
+
+const TRANSCRIPT = [
+  {module:'Développement Java Avancé', moy:16.33,
+   matieres:[{m:'Développement Java Avancé',n:16.33,c:1}]},
+  {module:'NoSQL Et Big Data', moy:11.67,
+   matieres:[{m:'NoSQL et Big Data',n:11.67,c:1}]},
+  {module:'Outils De Développement 3', moy:14.74,
+   matieres:[{m:'Dotnet',n:16.33,c:0.5714},{m:'Dev Mobile',n:12.63,c:0.4286}]},
+  {module:"Administration Des Systèmes D'Exploitation Et Virtualisation", moy:13.79,
+   matieres:[{m:'Administration Unix',n:13.5,c:0.5714},{m:'Virtualisation (Cloud)',n:14.17,c:0.4286}]},
+  {module:'Mathématiques Appliquées 2', moy:18.42,
+   matieres:[{m:'Analyse des Données',n:18.27,c:0.5},{m:'Recherche Opérationnelle',n:18.57,c:0.5}]},
+  {module:'Langues Étrangères 3', moy:15.37,
+   matieres:[{m:'Communicationconst TRANSCRIPT = [ {module:'Développement Java Avancé', moy:16.33, matieres:[{m:'Développement Java Avancé',n:16.33,c:1}]}, {module:'NoSQL Et Big Data', moy:11.67, matieres:[{m:'NoSQL et Big Data',n:11.67,c:1}]}, {module:'Outils De Développement 3', moy:14.74, matieres:[{m:'Dotnet',n:16.33,c:0.5714},{m:'Dev Mobile',n:12.63,c:0.4286}]}, {module:"Administration Des Systèmes D'Exploitation Et Virtualisation", moy:13.79, matieres:[{m:'Administration Unix',n:13.5,c:0.5714},{m:'Virtualisation (Cloud)',n:14.17,c:0.4286}]}, {module:'Mathématiques Appliquées 2', moy:18.42, matieres:[{m:'Analyse des Données',n:18.27,c:0.5},{m:'Recherche Opérationnelle',n:18.57,c:0.5}]}, {module:'Langues Étrangères 3', moy:15.37, matieres:[{m:'Communicationcontinue from hereVoici la suite et la fin complète du code ! Continuez exactement là où on s'est arrêtés :
+javascript  {module:'Langues Étrangères 3', moy:15.37,
+   matieres:[{m:'Communication Professionnelle 3',n:14.27,c:0.5},{m:'Advanced English 1',n:16.47,c:0.5}]},
+  {module:"Techniques De L'IA", moy:12.75,
+   matieres:[{m:"Introduction et Éthique de L'Ia",n:13.9,c:0.5},{m:'Machine Learning',n:11.6,c:0.5}]},
+];
+
+/* ═══════════════════ CALENDAR DATA ═══════════════════ */
+// weekOffset = 0 → semaine 25-31 May 2026
+let weekOffset = 0;
+
+const WEEK_EVENTS = {
+  0: [
+    // Wed 27
+    {col:3, startH:9,  startM:0,  endH:11, endM:0,  title:'Gestion Des Intrusions',    detail:'09:00 - 11:00 · Salle : LI03(M) - Maarif · Séance : Normale', color:'blue'},
+    {col:3, startH:11, startM:15, endH:13, endM:15, title:'Sécurité Des Applic...',     detail:'11:15 - 13:15 · Salle : LI41(M) - Maarif · Séance : Normale', color:'blue'},
+    // Thu 28
+    {col:4, startH:9,  startM:0,  endH:10, endM:30, title:'Blockchain',                detail:'09:00 - 10:30 · Salle : SC22(R) - Roudani · Séance : Normale', color:'blue'},
+    {col:4, startH:10, startM:45, endH:12, endM:15, title:'Blockchain',                detail:'10:45 - 12:15 · Salle : SC22(R) - Roudani · Séance : Normale', color:'blue'},
+    // Mon 25
+    {col:1, startH:14, startM:0,  endH:15, endM:30, title:'Gestion Des Incide...',     detail:'14:00 - 15:30 · Salle : LI11(R) - Roudani · Séance : Normale', color:'blue'},
+    // Tue 26
+    {col:2, startH:14, startM:0,  endH:15, endM:30, title:'Cryptographie',             detail:'14:00 - 15:30 · Salle : LI11(R) - Roudani · Séance : Normale', color:'blue'},
+    {col:2, startH:15, startM:45, endH:17, endM:15, title:'Cryptographie',             detail:'15:45 - 17:15 · Salle : LI11(R) - Roudani · Séance : Normale', color:'blue'},
+    // Fri 29
+    {col:5, startH:14, startM:30, endH:16, endM:0,  title:'Communication Pr...',       detail:'14:30 - 16:00 · Salle : SC31(R) - Roudani · Séance : Normale', color:'blue'},
+    // Sat 30
+    {col:6, startH:9,  startM:15, endH:10, endM:45, title:'Projet',                   detail:'09:15 - 10:45 · Salle : SC23(M) - Maarif · Séance : Encadrement', color:'indigo'},
+  ]
+};
+
+const HOURS = ['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM','7:00 PM'];
+const HOUR_VALS = [8,9,10,11,12,13,14,15,16,17,18,19];
+const SLOT_H = 64; // px per hour
+
+const WEEKS = [
+  {label:'25-31 May 2026',   days:[{n:'Mon',d:25,today:false},{n:'Tue',d:26,today:false},{n:'Wed',d:27,today:false},{n:'Thu',d:28,today:false},{n:'Fri',d:29,today:false},{n:'Sat',d:30,today:true},{n:'Sun',d:31,today:false}]},
+  {label:'1-7 Jun 2026',     days:[{n:'Mon',d:1,today:false},{n:'Tue',d:2,today:false},{n:'Wed',d:3,today:false},{n:'Thu',d:4,today:false},{n:'Fri',d:5,today:false},{n:'Sat',d:6,today:false},{n:'Sun',d:7,today:false}]},
+  {label:'18-24 May 2026',   days:[{n:'Mon',d:18,today:false},{n:'Tue',d:19,today:false},{n:'Wed',d:20,today:false},{n:'Thu',d:21,today:false},{n:'Fri',d:22,today:false},{n:'Sat',d:23,today:false},{n:'Sun',d:24,today:false}]},
+];
+
+function buildCalendar() {
+  const week = WEEKS[((weekOffset % WEEKS.length) + WEEKS.length) % WEEKS.length];
+  document.getElementById('calLabel').textContent = week.label;
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  // Corner
+  const corner = document.createElement('div');
+  corner.className = 'cal-corner';
+  grid.appendChild(corner);
+
+  // Day headers
+  week.days.forEach(d => {
+    const hdr = document.createElement('div');
+    hdr.className = 'cal-day-hdr';
+    const num = d.today
+      ? `<div class="dd today">${d.d}</div>`
+      : `<div class="dd">${d.d}</div>`;
+    hdr.innerHTML = `<div class="dn">${d.n}</div>${num}`;
+    grid.appendChild(hdr);
+  });
+
+  // Time rows
+  const events = WEEK_EVENTS[0] || [];
+  HOUR_VALS.forEach((h, hi) => {
+    // Time label
+    const tl = document.createElement('div');
+    tl.className = 'cal-time';
+    tl.textContent = HOURS[hi];
+    grid.appendChild(tl);
+
+    // 7 day cells
+    for (let col = 1; col <= 7; col++) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+
+      // Find events starting in this hour & column (only for default week)
+      if (weekOffset === 0) {
+        events.forEach(ev => {
+          if (ev.col === col && ev.startH === h) {
+            const durationMins = (ev.endH - ev.startH) * 60 + (ev.endM - ev.startM);
+            const heightPx = (durationMins / 60) * SLOT_H;
+            const topOffset = (ev.startM / 60) * SLOT_H;
+
+            const evDiv = document.createElement('div');
+            evDiv.className = `ev ${ev.color}`;
+            evDiv.style.cssText = `height:${heightPx - 4}px; top:${topOffset}px;`;
+            evDiv.innerHTML = `<div class="et">${ev.title}</div><div class="ed">${ev.detail}</div>`;
+            cell.appendChild(evDiv);
+          }
+        });
+      }
+      grid.appendChild(cell);
+    }
+  });
+}
+
+function calMove(dir) {
+  weekOffset += dir;
+  buildCalendar();
+}
+
+/* ═══════════════════ TABLES ═══════════════════ */
+function buildAbsTable(tbodyId, data) {
+  const tb = document.getElementById(tbodyId);
+  if (!tb) return;
+  tb.innerHTML = data.map(r => `
+    <tr>
+      <td>${r.date}</td>
+      <td>${r.hd}</td>
+      <td>${r.hf}</td>
+      <td>${r.cours}</td>
+      <td>${r.prof}</td>
+      <td>${r.status === 'justifié'
+        ? '<span class="badge-ok">justifié</span>'
+        : '<span class="badge-dash">-</span>'}</td>
+      <td>${r.justif || ''}</td>
+    </tr>`).join('');
+}
+
+/* ═══════════════════ TRANSCRIPT ═══════════════════ */
+function buildTranscript() {
+  const container = document.getElementById('transcriptContent');
+  if (!container) return;
+  container.innerHTML = TRANSCRIPT.map(mod => `
+    <div class="module-card">
+      <div class="module-hdr">
+        <div class="module-name">${mod.module}</div>
+        <div class="module-moy">Moyenne finale : <b>${mod.moy.toFixed(2)}</b></div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Matière</th>
+            <th>Note</th>
+            <th>Coef</th>
+            <th><span class="validated">✓ Résultat de module : Validé</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${mod.matieres.map(mat => `
+            <tr>
+              <td>${mat.m}</td>
+              <td><strong>${mat.n}</strong></td>
+              <td>${mat.c}</td>
+              <td></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`).join('');
+}
+
+/* ═══════════════════ NAVIGATION ═══════════════════ */
+function showPage(id) {
+  // hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // deactivate all nav items
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // show target page
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  // highlight correct nav item
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    if (item.getAttribute('onclick') === `showPage('${id}')`) {
+      item.classList.add('active');
+    }
+  });
+
+  // on mobile, close sidebar
+  if (window.innerWidth < 768) {
+    document.getElementById('sidebar').classList.add('collapsed');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+/* ═══════════════════ AUTH ═══════════════════ */
+function doLogin() {
+  document.getElementById('loginPage').style.display = 'none';
+  const portal = document.getElementById('portal');
+  portal.style.display = 'flex';
+
+  // initialise all dynamic content
+  buildCalendar();
+  buildAbsTable('tbAbsCoursS2', ABS_COURS_S2);
+  buildAbsTable('tbAbsCoursS1', ABS_COURS_S1);
+  buildTranscript();
+
+  // set default active nav item
+  document.querySelector('.nav-item').classList.add('active');
+}
+
+function doLogout() {
+  document.getElementById('portal').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+}
+
+/* ═══════════════════ INIT ═══════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  // nothing to do — login page is shown by default
+});
+</script>
+</body>
+</html>
