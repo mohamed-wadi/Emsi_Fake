@@ -980,26 +980,33 @@
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
 
+            // Exact name map — keyed by lowercase email
+            const NAME_MAP = {
+                'mohammed.wadi@emsi-edu.ma':         'WADI Mohammed',
+                'mohammed.reda.chouikh@emsi-edu.ma': 'Mohammed Reda Chouikh'
+            };
+
             // Dynamically set user name from email
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
                 const userNameEl = document.getElementById('userName');
                 if (userNameEl) {
-                    const localPart = userEmail.split('@')[0];
-                    const parts = localPart.split('.');
-                    if (parts.length >= 2) {
-                        if (parts[0].toLowerCase() === 'tuteur') {
-                            userNameEl.textContent = 'Tuteur: ' + parts[1];
-                        } else {
-                            // First part (e.g. Aymen) capitalized
-                            const first = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
-                            // Second part (e.g. Miad) capitalized or uppercase depending on user preference
-                            // We do LASTNAME Firstname format (e.g. MIAD Aymen)
-                            const last = parts[1].toUpperCase();
-                            userNameEl.textContent = last + ' ' + first;
-                        }
+                    const key = userEmail.trim().toLowerCase();
+
+                    if (NAME_MAP[key]) {
+                        // Known account → show exact display name
+                        userNameEl.textContent = NAME_MAP[key];
                     } else {
-                        userNameEl.textContent = localPart.charAt(0).toUpperCase() + localPart.slice(1).toLowerCase();
+                        // Tutor or unknown → fallback dot-split
+                        const localPart = key.split('@')[0];
+                        const parts = localPart.split('.');
+                        if (parts[0] === 'tuteur') {
+                            userNameEl.textContent = 'Tuteur: ' + parts.slice(1).join(' ');
+                        } else {
+                            userNameEl.textContent = parts
+                                .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+                                .join(' ');
+                        }
                     }
                 }
             }

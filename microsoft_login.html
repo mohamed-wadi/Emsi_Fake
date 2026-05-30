@@ -55,6 +55,8 @@
                 <input type="password" id="password" class="ms-input" placeholder="Password" required>
                 <span class="underline"></span>
             </div>
+
+            <div id="password-error" class="error-message"></div>
             
             <div class="subtitle">
                 <a href="#">Forgot password?</a>
@@ -67,83 +69,110 @@
     </div>
 
     <script>
-        const stepEmail = document.getElementById('step-email');
-        const stepPassword = document.getElementById('step-password');
-        const btnNext = document.getElementById('btn-next');
-        const btnSignin = document.getElementById('btn-signin');
-        const btnBack = document.getElementById('btn-back');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const displayEmail = document.getElementById('display-email');
+        // ── Whitelisted accounts ──────────────────────────────────────────────
+        const VALID_ACCOUNTS = [
+            { email: 'mohammed.wadi@emsi-edu.ma',           password: '1234' },
+            { email: 'mohammed.reda.chouikh@emsi-edu.ma',   password: '1234' }
+        ];
 
-        // Go to Password Step
+        const stepEmail    = document.getElementById('step-email');
+        const stepPassword = document.getElementById('step-password');
+        const btnNext      = document.getElementById('btn-next');
+        const btnSignin    = document.getElementById('btn-signin');
+        const btnBack      = document.getElementById('btn-back');
+        const emailInput   = document.getElementById('email');
+        const passwordInput= document.getElementById('password');
+        const displayEmail = document.getElementById('display-email');
+        const emailError   = document.getElementById('email-error');
+        const passwordError= document.getElementById('password-error');
+
+        // ── Step 1: Email validation ──────────────────────────────────────────
         btnNext.addEventListener('click', () => {
-            const emailVal = emailInput.value.trim();
-            const errorDiv = document.getElementById('email-error');
-            
+            const emailVal = emailInput.value.trim().toLowerCase();
+
             if (emailVal === '') {
-                errorDiv.textContent = 'Enter a valid email address.';
-                errorDiv.style.display = 'block';
-                emailInput.classList.add('input-error');
-                emailInput.focus();
+                showEmailError('Entrez une adresse e-mail valide.');
                 return;
             }
-            
-            if (!emailVal.toLowerCase().endsWith('@emsi-edu.ma')) {
-                errorDiv.textContent = 'Enter a valid student email ending with @emsi-edu.ma';
-                errorDiv.style.display = 'block';
-                emailInput.classList.add('input-error');
-                emailInput.focus();
+
+            if (!emailVal.endsWith('@emsi-edu.ma')) {
+                showEmailError('Entrez une adresse e-mail se terminant par @emsi-edu.ma');
                 return;
             }
-            
-            // Valid email -> save and proceed
-            errorDiv.style.display = 'none';
-            emailInput.classList.remove('input-error');
-            
-            localStorage.setItem('userEmail', emailVal);
-            
-            displayEmail.textContent = emailVal;
+
+            // Check against whitelist
+            const found = VALID_ACCOUNTS.find(a => a.email === emailVal);
+            if (!found) {
+                showEmailError("Ce compte n'existe pas. Vérifiez l'adresse e-mail ou créez-en un.");
+                return;
+            }
+
+            // Valid → proceed to password step
+            clearEmailError();
+            localStorage.setItem('userEmail', emailInput.value.trim());
+            displayEmail.textContent = emailInput.value.trim();
             stepEmail.classList.remove('active');
             stepPassword.classList.add('active');
             passwordInput.focus();
         });
 
-        // Hide error when typing
-        emailInput.addEventListener('input', () => {
-            const errorDiv = document.getElementById('email-error');
-            errorDiv.style.display = 'none';
-            emailInput.classList.remove('input-error');
-        });
-
-        // Trigger on enter key
-        emailInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                btnNext.click();
-            }
-        });
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                btnSignin.click();
-            }
-        });
-
-        // Go Back to Email Step
-        btnBack.addEventListener('click', () => {
-            stepPassword.classList.remove('active');
-            stepEmail.classList.add('active');
-            emailInput.focus();
-        });
-
-        // Complete Sign In
+        // ── Step 2: Password validation ───────────────────────────────────────
         btnSignin.addEventListener('click', () => {
-            if (passwordInput.value.trim() === '') {
+            const emailVal = (localStorage.getItem('userEmail') || '').toLowerCase();
+            const passVal  = passwordInput.value;
+
+            if (passVal === '') {
+                showPasswordError('Entrez le mot de passe.');
+                return;
+            }
+
+            const account = VALID_ACCOUNTS.find(a => a.email === emailVal);
+            if (!account || account.password !== passVal) {
+                showPasswordError('Mot de passe incorrect. Réessayez.');
+                passwordInput.value = '';
+                passwordInput.classList.add('input-error');
                 passwordInput.focus();
                 return;
             }
-            // Redirect to EMSI dashboard
+
+            // ✅ Authenticated — go to dashboard
             window.location.href = 'dashboard.html';
+        });
+
+        // ── Helper functions ──────────────────────────────────────────────────
+        function showEmailError(msg) {
+            emailError.textContent = msg;
+            emailError.style.display = 'block';
+            emailInput.classList.add('input-error');
+            emailInput.focus();
+        }
+        function clearEmailError() {
+            emailError.style.display = 'none';
+            emailInput.classList.remove('input-error');
+        }
+        function showPasswordError(msg) {
+            passwordError.textContent = msg;
+            passwordError.style.display = 'block';
+        }
+
+        // ── Clear errors while typing ─────────────────────────────────────────
+        emailInput.addEventListener('input', clearEmailError);
+        passwordInput.addEventListener('input', () => {
+            passwordError.style.display = 'none';
+            passwordInput.classList.remove('input-error');
+        });
+
+        // ── Enter key shortcuts ───────────────────────────────────────────────
+        emailInput.addEventListener('keypress',    e => { if (e.key === 'Enter') btnNext.click(); });
+        passwordInput.addEventListener('keypress', e => { if (e.key === 'Enter') btnSignin.click(); });
+
+        // ── Back button ───────────────────────────────────────────────────────
+        btnBack.addEventListener('click', () => {
+            stepPassword.classList.remove('active');
+            stepEmail.classList.add('active');
+            passwordInput.value = '';
+            passwordError.style.display = 'none';
+            emailInput.focus();
         });
     </script>
 </body>
